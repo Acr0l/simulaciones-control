@@ -1,0 +1,47 @@
+<mujoco model="fixed_ends_bridge">
+    <compiler angle="degree"/>
+    <option gravity="0 0 -9.81"/>
+    
+    <!-- Default settings for geom and joint -->
+    <default>
+        <geom type="box" size=".1 .05 .02" rgba="0.8 0.6 0.4 1"/>
+        <joint type="hinge" limited="true" range="-30 30"/>
+    </default>
+    
+    <!-- World body (base) -->
+    <worldbody>
+        <!-- Fixed end 1 -->
+        <body name="fixed_end1" pos="0 0 0">
+            <geom size=".1 .1 .02"/>
+            
+            <!-- Segment 1 attached to fixed end 1 -->
+            <body name="segment1" pos="0.2 0 0">
+                <joint axis="0 1 0" name="joint1"/>
+                <geom/>
+                
+                <!-- Segment 2 attached to segment 1 -->
+                <body name="segment2" pos="0.2 0 0">
+                    <joint axis="0 1 0" name="joint2"/>
+                    <geom/>
+                </body>
+            </body>
+        </body>
+        
+        <!-- Fixed end 2 -->
+        <body name="fixed_end2" pos="0.6 0 0">
+            <geom size=".1 .1 .02"/>
+            
+            <!-- Segment 3 attached to fixed end 2 -->
+            <body name="segment3" pos="-0.2 0 0">
+                <joint axis="0 1 0" name="joint3 "/>
+                <geom/>
+                
+                <!-- Segment 4 attached to segment 3 -->
+                <body name="segment4" pos="-0.2 0 0">
+                    <joint axis="0 1 0" name="joint4"/>
+                    <geom/>
+                </body>
+            </body>
+        </body>
+    </worldbody>
+</mujoco>
