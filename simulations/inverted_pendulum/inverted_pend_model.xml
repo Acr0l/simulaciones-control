@@ -10,8 +10,9 @@
 
         <body name="base" pos="0 0 0.1">
             <geom type="cylinder" size="0.02 0.6" euler="90 0 0"/>
+
             <body name="car" pos="0 0 0.031">
-                <joint name="car_joint" type="slide" axis="0 1 0" limited="true" range="-.6 .6"/>
+                <joint name="car_joint" type="slide" axis="0 1 0" limited="true" range="-.6 .6"  />
                 <geom type="box" size=".02 .02 .01" mass=".5" />
 
                 <body name="pend" pos="0 0 0.01">
@@ -24,7 +25,11 @@
 
     <actuator>
         <motor gear="8" joint="car_joint" name="car_motor"/>
-        <damper joint="car_joint" name="car_damper" kv="10" ctrlrange="0 1" />
-        <damper joint="pend_joint" name="pendulum_damper" kv="1" ctrlrange="0 1" />
+        <damper joint="car_joint" name="car_damper" kv="10" ctrlrange="0 .5" />
+        <damper joint="pend_joint" name="pendulum_damper" kv="1" ctrlrange="0 .5" />
     </actuator>
+
+    <sensor>
+        <jointpos name="theta" joint="pend_joint"/>
+    </sensor>
 </mujoco>

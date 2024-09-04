@@ -8,7 +8,7 @@
         <light diffuse=".5 .5 .5" pos="0 0 3" dir="0 0 -1" />
         <geom type="plane" size="1 1 .1" material="grid" />
 
-        
+        <!-- Ajustar gear para estar entre 90 y 270° (solo moverse en la mitad izquierda) -->
         <!-- Fixed gear body, connected to the actuator -->
         <body name="gear" pos="0 0 0.1">
             <!-- Gear joint - Allow it to rotate -->
@@ -17,13 +17,13 @@
             <!-- Pole, connected to the gear and with 1 dof to be comfortably attached to the gear -->
             <body name="pole" pos="-0.05 0 0">
                 <joint type="hinge" axis="0 1 0"/>
-                <geom type="capsule" fromto="0 0 0 .05 0 0.2" size="0.02"/>
+                <geom type="capsule" fromto="0 0 0 .05 0 0.2" size="0.01"/>
                 <!-- The beam where the ball will be attached -->
                 <body name="beam" pos=".05 0 0.2">
-                    <geom type="capsule" fromto="0 0 0 -.4 0 0" size="0.02"/>
+                    <geom type="capsule" fromto="0 0 0 -.4 0 0" size="0.01"/>
                     <joint name="beam_joint" type="hinge" axis="0 1 0" pos="0 0 0" limited="true" range="-30 30"/>
                     <!-- The ball to be controlled -->
-                    <body name="ball" pos="-.2 0 0.03">
+                    <body name="ball" pos="-.2 0 0.02">
                         <joint name="ball_joint" type="slide" axis="1 0 0" pos="0 0 0" limited="true" range="-0.2 0.2"/>
                         <geom type="sphere" size="0.01" mass="0.028"/>
                     </body>
