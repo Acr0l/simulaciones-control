@@ -1,47 +1,52 @@
-<mujoco model="fixed_ends_bridge">
-    <compiler angle="degree"/>
-    <option gravity="0 0 -9.81"/>
-    
-    <!-- Default settings for geom and joint -->
-    <default>
-        <geom type="box" size=".1 .05 .02" rgba="0.8 0.6 0.4 1"/>
-        <joint type="hinge" limited="true" range="-30 30"/>
-    </default>
-    
-    <!-- World body (base) -->
+<mujoco>
+    <asset>
+        <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1=".1 .2 .3" rgb2=".2 .3 .4"/>
+        <material name="grid" texture="grid" texrepeat="1 1" texuniform="true" reflectance=".2"/>
+        <texture name="beam" type=
+    </asset>
+
     <worldbody>
-        <!-- Fixed end 1 -->
-        <body name="fixed_end1" pos="0 0 0">
-            <geom size=".1 .1 .02"/>
-            
-            <!-- Segment 1 attached to fixed end 1 -->
-            <body name="segment1" pos="0.2 0 0">
-                <joint axis="0 1 0" name="joint1"/>
-                <geom/>
-                
-                <!-- Segment 2 attached to segment 1 -->
-                <body name="segment2" pos="0.2 0 0">
-                    <joint axis="0 1 0" name="joint2"/>
-                    <geom/>
-                </body>
+        <light diffuse=".5 .5 .5" pos="0 0 3" dir="0 0 -1" />
+        <geom type="plane" size="1 1 .1" material="grid" />
+
+        <!-- Ajustar gear para estar entre 90 y 270° (solo moverse en la mitad izquierda) -->
+        <!-- Fixed gear body, connected to the actuator -->
+        <body name="gear" pos="0 0 0.1">
+            <!-- Gear joint - Allow it to rotate -->
+            <joint name="gear_joint" type="hinge" axis="0 1 0" damping="1" pos="-.13 0 0" limited="true" range="-60 60" />
+            <geom type="cylinder" size="0.01 0.08" euler="0 90 0" pos="-.13 0 0" />
+            <!-- Pole, connected to the gear and with 1 dof to be comfortably attached to the gear -->
+            <body name="pole" pos="-0.05 0 0">
+                <joint type="hinge" axis="0 1 0"/>
+                <geom type="capsule" fromto="0 0 0 .05 0 0.2" size="0.01"/>
+                <!-- The beam where the ball will be attached -->
+                <body name="beam" pos=".05 0 0.2">
+                    <geom type="capsule" fromto="0 0 0 -.4 0 0" size="0.01"/>
+                    <joint name="beam_joint" type="hinge" axis="0 1 0" pos="0 0 0" limited="true" range="-30 30"/>
+                    <!-- The ball to be controlled -->
+                    <body name="ball" pos="-.2 0 0.02">
+                        <joint name="ball_joint" type="slide" axis="1 0 0" pos="0 0 0" limited="true" range="-0.2 0.2"/>
+                        <geom type="sphere" size="0.01" mass="0.028"/>
+                    </body>
+
+                    <!-- Attempt to fix the beam to the world -->
+                    <body name="fixed_end1" pos="-.4 0 0">
+                        <joint type="ball" />
+                        <geom size=".01 .01 .01"/>
+                    </body>
+                </body> 
             </body>
         </body>
+
         
-        <!-- Fixed end 2 -->
-        <body name="fixed_end2" pos="0.6 0 0">
-            <geom size=".1 .1 .02"/>
-            
-            <!-- Segment 3 attached to fixed end 2 -->
-            <body name="segment3" pos="-0.2 0 0">
-                <joint axis="0 1 0" name="joint3 "/>
-                <geom/>
-                
-                <!-- Segment 4 attached to segment 3 -->
-                <body name="segment4" pos="-0.2 0 0">
-                    <joint axis="0 1 0" name="joint4"/>
-                    <geom/>
-                </body>
-            </body>
-        </body>
+        
     </worldbody>
+
+    <equality>
+        <weld body1="fixed_end1" anchor="-.4 0 .3" />
+    </equality>
+
+    <actuator>
+        <motor gear="10" joint="gear_joint" name="beam_motor"/>
+    </actuator>
 </mujoco>

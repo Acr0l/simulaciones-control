@@ -12,8 +12,8 @@
         <!-- Fixed gear body, connected to the actuator -->
         <body name="gear" pos="0 0 0.1">
             <!-- Gear joint - Allow it to rotate -->
-            <joint name="gear_joint" type="hinge" axis="0 1 0" damping="1" />
-            <geom type="cylinder" size="0.04 0.02" euler="90 0 0" />
+            <joint name="gear_joint" type="hinge" axis="0 1 0" damping="1" pos="-.13 0 0" limited="true" range="-60 60" />
+            <geom type="cylinder" size="0.01 0.08" euler="0 90 0" pos="-.13 0 0" />
             <!-- Pole, connected to the gear and with 1 dof to be comfortably attached to the gear -->
             <body name="pole" pos="-0.05 0 0">
                 <joint type="hinge" axis="0 1 0"/>
@@ -33,7 +33,7 @@
                         <joint type="ball" />
                         <geom size=".01 .01 .01"/>
                     </body>
-                </body>
+                </body> 
             </body>
         </body>
 
