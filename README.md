@@ -1,70 +1,70 @@
-# Simulaciones de Control Automático en MuJoCo
+# Automatic Control Simulations in MuJoCo
 
-Este repositorio contiene una serie de entornos simulados en MuJoCo, diseñados para ayudar a los estudiantes de control automático a experimentar y probar diferentes algoritmos y técnicas en un espacio digital. Los entornos permiten la simulación de sistemas dinámicos y de control que son difíciles o costosos de recrear en el mundo real.
+This repository contains a set of simulated environments in MuJoCo, designed to help automatic control students experiment and test different algorithms and techniques in a digital space. The environments allow the simulation of dynamic and control systems that are difficult or expensive to recreate in real life.
 
-## ¿Qué es MuJoCo?
+## What is MuJoCo?
 
-MuJoCo (Multi-Joint dynamics with Contact) es un motor de simulación física avanzado que permite simular sistemas mecánicos con múltiples cuerpos, contactos y articulaciones. Es ampliamente utilizado en robótica, biomecánica, y en el diseño de sistemas de control automático.
+MuJoCo (Multi-Joint dynamics with Contact) is an advanced physics simulation engine that allows simulating mechanical systems with multiple bodies, contacts, and joints. It is widely used in robotics, biomechanics, and in the design of automatic control systems.
 
-### Características principales de MuJoCo
+### Key Features of MuJoCo
 
-- **Simulación precisa y rápida**: MuJoCo está diseñado para realizar cálculos rápidos de dinámicas en tiempo real.
-- **Flexibilidad en la definición de modelos**: Puedes crear modelos personalizados, definir restricciones, fricción, contacto, y más.
-- **Integración con Python**: Se puede controlar la simulación mediante scripts en Python, lo que permite automatizar experimentos y realizar análisis avanzados.
+- **Accurate and Fast Simulation**: MuJoCo is designed to perform real-time dynamic calculations efficiently.
+- **Flexible Model Definitions**: You can create custom models, define constraints, friction, contact, and more.
+- **Python Integration**: Simulations can be controlled through Python scripts, allowing for automated experiments and advanced analysis.
 
-## Requisitos Previos
+## Prerequisites
 
-Para utilizar este repositorio, necesitarás:
+To use this repository, you will need:
 
 - Python 3.x
-- [MuJoCo](http://www.mujoco.org/) instalado
-- La librería `mujoco`
+- [MuJoCo](http://www.mujoco.org/) installed (Or just the python library)
+- The `mujoco` library
 
-Instala las dependencias ejecutando:
+Install the dependencies by running:
 
 ```bash
 pip install mujoco
 ```
 
-## Cómo Usar el Repositorio
+## How to Use the Repository
 
-Este repositorio contiene una serie de modelos listos para ser simulados. Puedes cargar y ejecutar las simulaciones utilizando Python. A continuación, se muestra un ejemplo básico de cómo cargar un modelo y controlar la simulación:
+This repository contains a set of models ready to be simulated. You can load and run the simulations using Python. Below is a basic example of how to load a model and control the simulation:
 
-### Ejemplo de Código
+### Example Code
 
 ```python
+
 import mujoco
 import os
 
-# Cargar el modelo MuJoCo
-model_path = "ruta/al/modelo.xml"  # Cambia esto a la ubicación del archivo XML
+# Load MuJoCo model (MJCF file)
+model_path = "path/to/file.xml"
 model = mujoco.MjModel.from_xml_path(model_path)
 data = mujoco.MjData(model)
 
 with mujoco.viewer.launch_passive(model,data) as viewer:
     while viewer.is_running():
 
-        # Código de control
+        # Control here
 
         mujoco.mj_step(model, data)
 
         viewer.sync()
 ```
 
-Este código inicializa un modelo en MuJoCo, crea una simulación y ejecuta un bucle en el cual puedes observar la evolución del sistema. También puedes modificar los actuadores para controlar los componentes del modelo en tiempo real.
+This code initializes a MuJoCo model, creates a simulation, and runs a loop where you can observe the system’s evolution. You can also modify the actuators to control the model’s components in real time.
 
-## Estructura del Repositorio
+## Repository Structure
 
-- `/models`: Contiene los modelos MuJoCo en formato XML que representan diferentes sistemas de control automático.
-- `/scripts`: Contiene scripts de Python para cargar y controlar las simulaciones.
-- `/docs`: Documentación y guías sobre los experimentos incluidos.
+- `/models`: Contains MuJoCo models in XML format that represent different automatic control systems.
+- `/scripts`: Contains Python scripts to load and control the simulations.
+- `/samples`: Contains sample code snippets to help you get started.
+- `/docs`: Documentation and guides for the included experiments. (Not ready)
 
-## Contribuciones
+## Contributions
 
-Este repositorio está en constante desarrollo. Si tienes alguna sugerencia, mejora o deseas contribuir, ¡eres bienvenido a hacerlo! Puedes enviar un pull request o abrir un issue con tus ideas.
+This repository is under continuous development. If you have any suggestions, improvements, or would like to contribute, you are welcome to do so! You can submit a pull request or open an issue with your ideas.
 
-## Licencia
+## License
 
-Este proyecto está licenciado bajo la [MIT License](LICENSE).
-
----
+This project is licensed under the [MIT License](https://mit-license.org/).

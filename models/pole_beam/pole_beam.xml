@@ -2,31 +2,30 @@
     <asset>
         <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1=".1 .2 .3" rgb2=".2 .3 .4"/>
         <material name="grid" texture="grid" texrepeat="1 1" texuniform="true" reflectance=".2"/>
-        <texture name="beam" type=
     </asset>
 
     <worldbody>
-        <light diffuse=".5 .5 .5" pos="0 0 3" dir="0 0 -1" />
+        <light diffuse=".5 .5 .5" pos="0 0.1 2" dir="0 0 -1" />
         <geom type="plane" size="1 1 .1" material="grid" />
 
-        <!-- Ajustar gear para estar entre 90 y 270° (solo moverse en la mitad izquierda) -->
         <!-- Fixed gear body, connected to the actuator -->
         <body name="gear" pos="0 0 0.1">
             <!-- Gear joint - Allow it to rotate -->
+            <!-- Adjust gear to move between -60 and 60 degrees -->
             <joint name="gear_joint" type="hinge" axis="0 1 0" damping="1" pos="-.13 0 0" limited="true" range="-60 60" />
-            <geom type="cylinder" size="0.01 0.08" euler="0 90 0" pos="-.13 0 0" />
+            <geom type="cylinder" size="0.01 0.08" euler="0 90 0" pos="-.13 0 0" rgba=".2 .2 .2 1"/>
             <!-- Pole, connected to the gear and with 1 dof to be comfortably attached to the gear -->
             <body name="pole" pos="-0.05 0 0">
                 <joint type="hinge" axis="0 1 0"/>
-                <geom type="capsule" fromto="0 0 0 .05 0 0.2" size="0.01"/>
+                <geom type="capsule" fromto="0 0 0 .05 0 0.2" size="0.01" rgba="1 1 1 1"/>
                 <!-- The beam where the ball will be attached -->
                 <body name="beam" pos=".05 0 0.2">
-                    <geom type="capsule" fromto="0 0 0 -.4 0 0" size="0.01"/>
+                    <geom type="capsule" fromto="0 0 0 -.4 0 0" size="0.01" rgba="1 1 1 1"/>
                     <joint name="beam_joint" type="hinge" axis="0 1 0" pos="0 0 0" limited="true" range="-30 30"/>
                     <!-- The ball to be controlled -->
                     <body name="ball" pos="-.2 0 0.02">
                         <joint name="ball_joint" type="slide" axis="1 0 0" pos="0 0 0" limited="true" range="-0.2 0.2"/>
-                        <geom type="sphere" size="0.01" mass="0.028"/>
+                        <geom type="sphere" size="0.01" mass="0.028" rgba="1 .2 .2 1"/>
                     </body>
 
                     <!-- Attempt to fix the beam to the world -->

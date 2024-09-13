@@ -24,7 +24,7 @@
     </worldbody>
 
     <actuator>
-        <motor gear="8" joint="car_joint" name="car_motor"/>
+        <motor gear="8" joint="car_joint" name="car_motor" ctrlrange="-.5 .5"/>
         <damper joint="car_joint" name="car_damper" kv="10" ctrlrange="0 .5" />
         <damper joint="pend_joint" name="pendulum_damper" kv="1" ctrlrange="0 .5" />
     </actuator>
