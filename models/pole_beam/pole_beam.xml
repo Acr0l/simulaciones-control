@@ -46,6 +46,10 @@
     </equality>
 
     <actuator>
-        <motor gear="10" joint="gear_joint" name="beam_motor"/>
+        <motor gear="10" joint="gear_joint" name="motor"/>
     </actuator>
+
+    <sensor>
+        <jointvel name="theta_dot" joint="gear_joint"/>
+    </sensor>
 </mujoco>
