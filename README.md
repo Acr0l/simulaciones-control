@@ -35,6 +35,7 @@ This repository contains a set of models ready to be simulated. You can load and
 ```python
 
 import mujoco
+import mujoco.viewer
 import os
 
 # Load MuJoCo model (MJCF file)
@@ -53,6 +54,8 @@ with mujoco.viewer.launch_passive(model,data) as viewer:
 ```
 
 This code initializes a MuJoCo model, creates a simulation, and runs a loop where you can observe the system’s evolution. You can also modify the actuators to control the model’s components in real time.
+
+**Note:** The `mujoco.viewer.launch_passive` function is a helper function that creates a window to visualize the simulation. You can also use the `mujoco.viewer.launch` function to interact with the simulation using the mouse and keyboard. **Any of the two functions _require_ importing the `mujoco.viewer` module**.
 
 ## Repository Structure
 
