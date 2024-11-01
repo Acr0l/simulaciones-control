@@ -5,11 +5,10 @@ import mujoco
 import mujoco.viewer
 from lib.voltage import apply_motor_voltage
 
-# Obtener la ruta actual del archivo
+# Get current file path
 current_path = os.path.dirname(os.path.abspath(__file__))
 
-# Ruta al modelo
-# Resto del código...rear el modelo e información
+# Model's path
 model_path = os.path.join(
     current_path, "../models/pole_beam/pole_beam.xml")
 
@@ -23,7 +22,7 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
     while viewer.is_running() and time.time() - start < 30:
         step_start = time.time()
         # Control de la simulación
-        apply_motor_voltage(m, d, 0, .2)
+        apply_motor_voltage(m, d, 0, .2, [0, m.opt.timestep])
 
         # Avanzar la simulación "un paso"
         mujoco.mj_step(m, d)

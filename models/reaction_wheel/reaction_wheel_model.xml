@@ -1,30 +1,30 @@
 <mujoco>
     <asset>
-        <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1=".1 .2 .3" rgb2=".2 .3 .4"/>
+        <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1=".9 .9 .9" rgb2=".3 .3 .9"/>
         <material name="grid" texture="grid" texrepeat="1 1" texuniform="true" reflectance=".2"/>
     </asset>
 
     <worldbody>
-        <light diffuse=".5 .5 .5" pos="0 0 3" dir="0 0 -1" />
+        <light diffuse=".8 .8 .8" pos="0 .3 3" dir="0 0 -1" />
         <geom type="plane" size="1 1 .1" material="grid" />
 
         <!-- Fixed gear body -->
         <body name="stand" pos="0 0 0">
-            <geom type="box" size=".05 .01 .02" pos="0 -.021 0" rgba="1 1 1 1" />
-            <geom type="box" size=".05 .01 .02" pos="0 .021 0" rgba="1 1 1 1" />
+            <geom type="box" size=".05 .01 .02" pos="0 -.021 .02" rgba="1 1 1 1" />
+            <geom type="box" size=".05 .01 .02" pos="0 .021 .02" rgba="1 1 1 1" />
             <body name="pend_arm" pos="0 0 .015">
                 <geom type="capsule" size=".01" fromto="0 0 0 0 0 0.207" rgba="1 1 1 1" />
-                <joint type="hinge" axis="0 1 0" pos="0 0 0" limited="true" range="-30 30" />
+                <joint type="hinge" name="axis" axis="0 1 0" pos="0 0 0" limited="true" range="-30 30" />
+                <geom type="box" size=".01 .01 .01" pos="0 0 0.207" rgba="1 1 1 1" mass=""/>
 
                 <body name="wheel" pos="0 0.02 0.207">
                     <!-- Central cylinder representing the wheel -->
-                    <geom type="cylinder" size="0.105 0.01" rgba=".2 .2 .2 1" euler="90 0 0"/>
+                    <geom type="cylinder" size="0.105 0.01" rgba=".5 .5 .8 1" euler="90 0 0"/>
                     
                     <!-- Spokes -->
-                    <geom type="box" size="0.02 0.001 0.05" pos="0 0.02 0.05" euler="0 0 0" rgba="0.3 0.3 0.3 1"/>
-                    <!-- <geom type="box" size="0.025 0.3 0.05" pos="0 0 0" euler="0 0 1.57" rgba="0.3 0.3 0.3 1"/>
-                    <geom type="box" size="0.025 0.3 0.05" pos="0 0 0" euler="0 0 3.14" rgba="0.3 0.3 0.3 1"/>
-                    <geom type="box" size="0.025 0.3 0.05" pos="0 0 0" euler="0 0 4.71" rgba="0.3 0.3 0.3 1"/> -->
+                    <geom type="box" size="0.01 0.001 0.04" pos="0 0.01 0.05" euler="0 0 0" rgba="1 1 1 1"/>
+                    <geom type="box" size="0.01 0.001 0.04" pos=".045 0.01 -0.03" euler="0 120 0" rgba="1 1 1 1"/>
+                    <geom type="box" size="0.01 0.001 0.04" pos="-.045 0.01 -0.03" euler="0 -120 0" rgba="1 1 1 1"/>
 
                     <!-- Revolute joint for wheel rotation -->
                     <joint name="wheel_rot" type="hinge" pos="0 0 0" axis="0 1 0" damping=".1"/>
@@ -37,9 +37,10 @@
 
     <actuator>
         <!-- Agregar medidas en el slider (-a, a) -->
-        <motor gear="1" joint="wheel_rot" name="motor"/>
+        <motor gear="10" joint="wheel_rot" name="motor"/>
     </actuator>
 
     <sensor>
         <jointvel name="theta_dot" joint="wheel_rot" />
+    </sensor>
 </mujoco>
