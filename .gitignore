@@ -154,5 +154,4 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-# Solutions
-sol_*
+*LOG*
