@@ -9,11 +9,11 @@ from lib.voltage import apply_motor_voltage
 # ---------------------------------- CONTROL ---------------------------------
 Kp_angle = 505.6  # Proportional gain for angle
 Ki_angle = 2935   # Integral gain for angle
-Kd_angle = 21.78   # Derivative gain for angle
+Kd_angle = 21.78    # Derivative gain for angle
 
-Kp_motor = 489
-Ki_motor = 10470
-Kd_motor = 0
+Kp_motor = 14.3156
+Ki_motor = 51.8962
+Kd_motor = 0.00036261
 
 Kp_pos = 0
 Ki_pos = 0
@@ -59,10 +59,12 @@ def pid_motor_control(current_torque, dt, o_voltage):
     control_signal = proportional + \
         (Ki_motor * integral_motor) + (Kd_motor * derivative)
 
-    o_voltage(control_signal)
+    applied_voltage = o_voltage(control_signal)
+    applied_voltage = applied_voltage if isinstance(
+        applied_voltage, (int, float)) else applied_voltage[0]
 
     # Collect data
-    voltage_data.append(control_signal)
+    voltage_data.append(applied_voltage)
     motor_setpoint_data.append(motor_setpoint)
     current_torque_data.append(current_torque)
 
@@ -72,7 +74,6 @@ def pid_angle_control(current_angle, current_pos, dt):
 
     # Error calculation for the pendulum angle
     error_angle = angle_setpoint - (current_angle)
-    print(error_angle)
     # PID terms for angle control
     proportional = Kp_angle * error_angle
     integral_angle += error_angle * dt

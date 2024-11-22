@@ -7,7 +7,23 @@ k_e = 0.01;    % Back-EMF constant (V/(rad/s))
 k_t = 0.1;     % Torque constant (Nm/A)
 
 % Define the transfer function for current in response to applied voltage
-numerator = [1];
+numerator = 1;
+denominator = [L, R];
+current_tf = tf(numerator, denominator);
+
+% Define torque as output using current_tf and torque constant
+torque_tf = k_t * current_tf;
+
+pidTuner(torque_tf, 'pid')
+
+
+R = 8.47;       % Resistance (Ohms)
+L = 0.979e-3;       % Inductance (Henries)
+k_e = 0.0477;    % Back-EMF constant (V/(rad/s))
+k_t = 0.0477;     % Torque constant (Nm/A)
+
+% Define the transfer function for current in response to applied voltage
+numerator = 1;
 denominator = [L, R];
 current_tf = tf(numerator, denominator);
 
