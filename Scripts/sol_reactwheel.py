@@ -6,9 +6,12 @@ import mujoco.viewer
 from lib.voltage import apply_motor_voltage
 
 # PID Controller Parameters
-Kp = 20.0  # Proportional gain
-Ki = 1.0   # Integral gain
-Kd = 0.5   # Derivative gain
+Kp = -450.2637  # Proportional gain
+Ki = -1313.4007   # Integral gain
+Kd = -22.6168   # Derivative gain
+# Kp = -949.0983  # Proportional gain
+# Ki = -4747.6256   # Integral gain
+# Kd = -27.8704   # Derivative gain
 
 # PID State Variables
 pid_state = {
@@ -40,10 +43,6 @@ def apply_pid_control(model, data, actuator_id, setpoint, dt, pid_state):
 
     # Update integral with anti-windup
     pid_state['integral'] += error * dt
-    integral_max = 10.0
-    integral_min = -10.0
-    pid_state['integral'] = max(
-        min(pid_state['integral'], integral_max), integral_min)
 
     # Calculate derivative
     derivative = (error - pid_state['previous_error']) / dt if dt > 0 else 0.0
@@ -52,8 +51,8 @@ def apply_pid_control(model, data, actuator_id, setpoint, dt, pid_state):
     control_signal = Kp * error + Ki * pid_state['integral'] + Kd * derivative
 
     # Optional: Scale control signal to voltage limits
-    max_voltage = 5.0
-    min_voltage = -5.0
+    max_voltage = 5.0 * 10**10
+    min_voltage = -5.0 * 10**10
     voltage = max(min(control_signal, max_voltage), min_voltage)
 
     # Update previous error
@@ -78,7 +77,15 @@ d = mujoco.MjData(m)
 with mujoco.viewer.launch_passive(m, d) as viewer:
     start = time.time()
     last_time = start
+    d.ctrl[0] = .01
+    # One step of the simulation
+    mujoco.mj_step(m, d)
+
+    # Updaate the view
+    viewer.sync()
     # Run sim for 30 seconds.
+    print(m.body('pend_arm'))
+    print(m.body('wheel'))
     while viewer.is_running() and time.time() - start < 30:
         current_time = time.time()
         dt = current_time - last_time

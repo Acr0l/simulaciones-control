@@ -15,10 +15,6 @@ Kp_motor = 14.3156
 Ki_motor = 51.8962
 Kd_motor = 0.00036261
 
-Kp_pos = 0
-Ki_pos = 0
-Kd_pos = 0
-
 # Setpoints
 angle_setpoint = 0
 motor_setpoint = 0
@@ -30,9 +26,6 @@ integral_angle = 0
 
 prev_error_motor = 0
 integral_motor = 0
-
-prev_error_pos = 0
-integral_pos = 0
 
 # Data collection lists
 time_data = []
@@ -91,27 +84,6 @@ def pid_angle_control(current_angle, current_pos, dt):
     angle_setpoint_data.append(angle_setpoint)
     current_angle_data.append(current_angle)
 
-
-def pid_pos_control(current_pos, dt):
-    global prev_error_pos, integral_pos, motor_setpoint, pos_setpoint
-
-    # Error calculation for the cart position
-    error_pos = pos_setpoint - current_pos
-
-    # PID terms for position control
-    proportional = Kp_pos * error_pos
-    integral_pos += error_pos * dt
-    derivative = (error_pos - prev_error_pos) / dt
-    prev_error_pos = error_pos
-
-    # PID output (control signal: desired voltage to apply to the motor)
-    control_signal = proportional + \
-        (Ki_pos * integral_pos) + (Kd_pos * derivative)
-
-    # Apply the control signal to the motor (adjust voltage)
-    motor_setpoint += control_signal
-
-
 # Get current file path
 current_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -119,23 +91,22 @@ current_path = os.path.dirname(os.path.abspath(__file__))
 model_path = os.path.join(
     current_path, "../models/inverted_pendulum/inverted_pend_model.xml")
 
-# Crear el modelo y la información
+# Create model and data objects (the MuJoCo storage structures)
 m = mujoco.MjModel.from_xml_path(model_path)
 d = mujoco.MjData(m)
 
 with mujoco.viewer.launch_passive(m, d) as viewer:
     start = time.time()
-    # Correr la simulación por 30 segundos
+    # Run the simulation for 30 seconds
     while viewer.is_running() and time.time() - start < 180:
         step_start = time.time()
         dt = m.opt.timestep - (time.time() - step_start)
 
-        # Control de la simulación
+        # Control
         current_angle = d.sensor("theta").data.copy()
         current_pos = d.joint("car_joint").qpos[0]
 
         pid_angle_control(current_angle, current_pos, dt)
-        pid_pos_control(current_pos, dt)
 
         current_torque = d.ctrl[0].copy()
         pid_motor_control(current_torque, dt, lambda voltage: apply_motor_voltage(
@@ -144,13 +115,13 @@ with mujoco.viewer.launch_passive(m, d) as viewer:
         # Collect time data
         time_data.append(time.time() - start)
 
-        # Avanzar la simulación "un paso"
+        # Advance the simulation "one step"
         mujoco.mj_step(m, d)
 
-        # Actualizar la vista
+        # Update view
         viewer.sync()
 
-        # Esperar hasta el siguiente paso (para mantener la velocidad de la simulación)
+        # Wait until the next step (to maintain the simulation speed)
         if dt > 0:
             time.sleep(dt)
 

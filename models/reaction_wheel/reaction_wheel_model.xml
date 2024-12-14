@@ -13,8 +13,8 @@
             <geom type="box" size=".05 .01 .02" pos="0 -.021 .02" rgba="1 1 1 1" />
             <geom type="box" size=".05 .01 .02" pos="0 .021 .02" rgba="1 1 1 1" />
             <body name="pend_arm" pos="0 0 .015">
-                <geom type="capsule" size=".01" fromto="0 0 0 0 0 0.207" rgba="1 1 1 1" />
-                <joint type="hinge" name="axis" axis="0 1 0" pos="0 0 0" limited="true" range="-30 30" />
+                <geom name="arm" type="capsule" size=".01" fromto="0 0 0 0 0 0.207" rgba="1 1 1 1" />
+                <joint type="hinge" name="axis" axis="0 1 0" pos="0 0 0" damping="0.00001" limited="true" range="-30 30" />
                 <geom type="box" size=".01 .01 .01" pos="0 0 0.207" rgba="1 1 1 1" mass=""/>
 
                 <body name="wheel" pos="0 0.02 0.207">
@@ -27,7 +27,7 @@
                     <geom type="box" size="0.01 0.001 0.04" pos="-.045 0.01 -0.03" euler="0 -120 0" rgba="1 1 1 1"/>
 
                     <!-- Revolute joint for wheel rotation -->
-                    <joint name="wheel_rot" type="hinge" pos="0 0 0" axis="0 1 0" damping=".1"/>
+                    <joint name="wheel_rot" type="hinge" pos="0 0 0" axis="0 1 0" damping=".001"/>
 
                     <camera name="wheel_cam" pos="0 0.5 0" zaxis="0 1 0" fovy="45" mode="trackcom" />
                 </body>
